@@ -23,15 +23,16 @@ namespace MastermindCSProject
         private int attempts = 1;
         private DispatcherTimer timer;
         private int startTime;
+        private bool isGameOver = false;
 
 
         public MainWindow()
         {
             InitializeComponent();
+            timer = new DispatcherTimer();
             RandomColors(out color1, out color2, out color3, out color4);
             secretCodeTextBox.Text = $"Kleur 1: {color1}, Kleur 2: {color2}, Kleur 3:{color3}, Kleur 4:{color4}";
             Title = $"Mastermind - Poging: {attempts}";
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -45,9 +46,9 @@ namespace MastermindCSProject
         /// </summary>
         private void StartCountdown()
         {
-            timer = new DispatcherTimer();
             startTime = 10;
             timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick -= Timer_Tick;
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -80,12 +81,48 @@ namespace MastermindCSProject
         private void StopTimer()
         {
             timer.Stop();
-            attempts++;
-            Title = $"Mastermind - Poging: {attempts}";
-            timerLabel.Content = "Tijd is op! Beurt verloren!";
-            StartCountdown();
+            if (attempts <= 10 && !isGameOver)
+            {
+                attempts++;
+                Title = $"Mastermind - Poging: {attempts}";
+                timerLabel.Content = "Tijd is op! Beurt verloren!";
+                StartCountdown();
+            }
+            
+            else
+            {
+                isGameOver = true;
+                MessageBox.Show("Game Over! De correct code was: " + color1 + " " + color2 + " " + color3 + " " + color4);
+                MessageBoxResult result =  MessageBox.Show("Wil je nog een keer spelen?", "Einde Spel!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.No)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    ResetGame();
+                }
+            }
         }
 
+        private void ResetGame()
+        {
+            attempts = 1;
+            RandomColors(out color1, out color2, out color3, out color4);
+            secretCodeTextBox.Text = $"Kleur 1: {color1}, Kleur 2: {color2}, Kleur 3:{color3}, Kleur 4:{color4}";
+            Title = $"Mastermind - Poging: {attempts}";
+            timerLabel.Content = "Timer: 10";
+            color1ComboBox.SelectedIndex = -1;
+            color2ComboBox.SelectedIndex = -1;
+            color3ComboBox.SelectedIndex = -1;
+            color4ComboBox.SelectedIndex = -1;
+            color1Label.Background = Brushes.Transparent;
+            color2Label.Background = Brushes.Transparent;
+            color3Label.Background = Brushes.Transparent;
+            color4Label.Background = Brushes.Transparent;
+            StartCountdown();
+        }
 
         /// <summary>
         /// Methode die laat zien wat de geheime code is als de speler CTRL + F12 indrukt.
@@ -203,27 +240,37 @@ namespace MastermindCSProject
                         break;
                 }
 
-                if (chosenColors[i] == generatedColors[i])
+                if (targetLabel != null)
                 {
-                    targetLabel.BorderBrush = Brushes.DarkRed;
-                    targetLabel.BorderThickness = new Thickness(5);
+                    if (chosenColors[i] == generatedColors[i])
+                    {
+                        targetLabel.BorderBrush = Brushes.DarkRed;
+                        targetLabel.BorderThickness = new Thickness(5);
+                    }
+                    else if (generatedColors.Contains(chosenColors[i]))
+                    {
+                        targetLabel.BorderBrush = Brushes.Wheat;
+                        targetLabel.BorderThickness = new Thickness(5);
+                    }
+                    else
+                    {
+                        targetLabel.BorderBrush = Brushes.Transparent;
+                        targetLabel.BorderThickness = new Thickness(5);
+                    }
                 }
-                else if (generatedColors.Contains(chosenColors[i]))
-                {
-                    targetLabel.BorderBrush = Brushes.Wheat;
-                    targetLabel.BorderThickness = new Thickness(5);
-                }
-                else
-                {
-                    targetLabel.BorderBrush = Brushes.Transparent;
-                    targetLabel.BorderThickness = new Thickness(5);
-                }
-
             }
 
-            attempts++;
-            this.Title = $"Mastermind - Poging: {attempts}";
-            StartCountdown();
+            if (attempts <= 10)
+            {
+                attempts++;
+                this.Title = $"Mastermind - Poging: {attempts}";
+                StartCountdown();
+            }
+            else
+            {
+                StopTimer();
+            }
+           
         }
     }
 }
