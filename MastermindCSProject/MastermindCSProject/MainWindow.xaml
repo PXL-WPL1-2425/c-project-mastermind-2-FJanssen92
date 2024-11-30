@@ -1,0 +1,62 @@
+﻿<Window x:Class="MastermindCSProject.MainWindow" Loaded="Window_Loaded"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MastermindCSProject"
+        mc:Ignorable="d"
+        Title="Mastermind" Height="450" Width="800" KeyDown="ToggleDebug">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="62*"/>
+            <ColumnDefinition Width="51*"/>
+        </Grid.ColumnDefinitions>
+        <ComboBox x:Name="color1ComboBox" Margin="22,26,0,0" VerticalAlignment="Top" Height="32" SelectionChanged="colorComboBox_SelectionChanged" HorizontalAlignment="Left" Width="156" Grid.ColumnSpan="5">
+            <ComboBoxItem Content="White"/>
+            <ComboBoxItem Content="Red"/>
+            <ComboBoxItem Content="Blue"/>
+            <ComboBoxItem Content="Green"/>
+            <ComboBoxItem Content="Orange"/>
+            <ComboBoxItem Content="Yellow"/>
+        </ComboBox>
+        <ComboBox x:Name="color2ComboBox" Margin="10,26,0,0" VerticalAlignment="Top" Width="158" Height="32" Grid.Column="5" SelectionChanged="colorComboBox_SelectionChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+            <ComboBoxItem Content="White"/>
+            <ComboBoxItem Content="Red"/>
+            <ComboBoxItem Content="Blue"/>
+            <ComboBoxItem Content="Green"/>
+            <ComboBoxItem Content="Orange"/>
+            <ComboBoxItem Content="Yellow"/>
+        </ComboBox>
+        <ComboBox x:Name="color3ComboBox" HorizontalAlignment="Left" Margin="177,26,0,0" VerticalAlignment="Top" Width="158" Height="32" Grid.Column="6" SelectionChanged="colorComboBox_SelectionChanged" Grid.ColumnSpan="2">
+            <ComboBoxItem Content="White"/>
+            <ComboBoxItem Content="Red"/>
+            <ComboBoxItem Content="Blue"/>
+            <ComboBoxItem Content="Green"/>
+            <ComboBoxItem Content="Orange"/>
+            <ComboBoxItem Content="Yellow"/>
+        </ComboBox>
+        <ComboBox x:Name="color4ComboBox" HorizontalAlignment="Left" Margin="55,26,0,0" VerticalAlignment="Top" Width="158" Height="32" Grid.Column="7" SelectionChanged="colorComboBox_SelectionChanged">
+            <ComboBoxItem Content="White"/>
+            <ComboBoxItem Content="Red"/>
+            <ComboBoxItem Content="Blue"/>
+            <ComboBoxItem Content="Green"/>
+            <ComboBoxItem Content="Orange"/>
+            <ComboBoxItem Content="Yellow"/>
+        </ComboBox>
+        <Button x:Name="checkCodeButton" Content="Check code" HorizontalAlignment="Left" Margin="8,289,0,0" VerticalAlignment="Top" Width="314" Height="40" Grid.Column="6" Grid.ColumnSpan="2" Click="checkCodeButton_Click"/>
+        <Label x:Name="color1Label" Content="" HorizontalAlignment="Left" Margin="22,73,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Width="156" Height="201"/>
+        <Label x:Name="color2Label" Grid.Column="5" Content="" HorizontalAlignment="Left" Margin="11,73,0,0" VerticalAlignment="Top" Height="201" Width="156" Grid.ColumnSpan="2"/>
+        <Label x:Name="color3Label" Grid.Column="6" Content="" HorizontalAlignment="Left" Margin="179,73,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="201" Width="156"/>
+        <Label x:Name="color4Label" Grid.Column="7" Content="" HorizontalAlignment="Left" Margin="57,73,0,0" VerticalAlignment="Top" Height="201" Width="156"/>
+        <TextBox x:Name="secretCodeTextBox" Grid.Column="6" HorizontalAlignment="Left" Margin="8,334,0,0" VerticalAlignment="Top" Width="314" Grid.ColumnSpan="2" Height="43" IsEnabled="False" SelectionOpacity="-1" FontSize="14" FontWeight="Bold" Visibility="Hidden" TextWrapping="Wrap"/>
+        <Label x:Name="timerLabel" Content="Timer:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Width="158"/>
+
+    </Grid>
+</Window>
