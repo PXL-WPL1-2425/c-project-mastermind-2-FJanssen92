@@ -18,17 +18,37 @@ namespace MastermindCSProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        private class Attempt
+        {
+            public Brush ChosenColor1 { get; set; }
+            public Brush ChosenColor2 { get; set; }
+            public Brush ChosenColor3 { get; set; }
+            public Brush ChosenColor4 { get; set; }
+            public Brush Color1BorderBrush { get; set; }
+            public Thickness Color1BorderThickness { get; set; }
+            public Brush Color2BorderBrush { get; set; }
+            public Thickness Color2BorderThickness { get; set; }
+            public Brush Color3BorderBrush { get; set; }
+            public Thickness Color3BorderThickness { get; set; }
+            public Brush Color4BorderBrush { get; set; }
+            public Thickness Color4BorderThickness { get; set; }
+        }
 
+            private List<Attempt> attemptsList;
         private string color1, color2, color3, color4;
         private int attempts = 1;
         private DispatcherTimer timer;
         private int startTime;
         private bool isGameOver = false;
 
+        private Color[] colors = { Colors.White, Colors.Red, Colors.Blue, Colors.Green, Colors.Yellow, Colors.Orange };
+        private int[] colorIndex = { 0, 0, 0, 0 };
+
 
         public MainWindow()
         {
             InitializeComponent();
+            attemptsList = new List<Attempt>();
             timer = new DispatcherTimer();
             RandomColors(out color1, out color2, out color3, out color4);
             secretCodeTextBox.Text = $"Kleur 1: {color1}, Kleur 2: {color2}, Kleur 3:{color3}, Kleur 4:{color4}";
@@ -113,14 +133,21 @@ namespace MastermindCSProject
             secretCodeTextBox.Text = $"Kleur 1: {color1}, Kleur 2: {color2}, Kleur 3:{color3}, Kleur 4:{color4}";
             Title = $"Mastermind - Poging: {attempts}";
             timerLabel.Content = "Timer: 10";
-            color1ComboBox.SelectedIndex = -1;
-            color2ComboBox.SelectedIndex = -1;
-            color3ComboBox.SelectedIndex = -1;
-            color4ComboBox.SelectedIndex = -1;
-            color1Label.Background = Brushes.Transparent;
-            color2Label.Background = Brushes.Transparent;
-            color3Label.Background = Brushes.Transparent;
-            color4Label.Background = Brushes.Transparent;
+
+            color1Ellipse.Fill = Brushes.White;
+            color2Ellipse.Fill = Brushes.White;
+            color3Ellipse.Fill = Brushes.White;
+            color4Ellipse.Fill = Brushes.White;
+
+            color1Border.BorderBrush = Brushes.Black;
+            color1Border.BorderThickness = new Thickness(1);
+            color2Border.BorderBrush = Brushes.Black;
+            color2Border.BorderThickness = new Thickness(1);
+            color3Border.BorderBrush = Brushes.Black;
+            color3Border.BorderThickness = new Thickness(1);
+            color4Border.BorderBrush = Brushes.Black;
+            color4Border.BorderThickness = new Thickness(1);
+
             StartCountdown();
         }
 
@@ -145,7 +172,19 @@ namespace MastermindCSProject
             }
         }
 
-       
+        private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Ellipse ellipse = sender as Ellipse;
+            int index = 0;
+
+            if (ellipse == color1Ellipse) index = 0;
+            else if (ellipse == color2Ellipse) index = 1;
+            else if (ellipse == color3Ellipse) index = 2;
+            else if (ellipse == color4Ellipse) index = 3;
+
+            colorIndex[index] = (colorIndex[index] + 1) % colors.Length;
+            ellipse.Fill = new SolidColorBrush(colors[colorIndex[index]]);
+        }
 
         public void RandomColors(out string color1, out string color2, out string color3, out string color4)
         {
@@ -188,77 +227,105 @@ namespace MastermindCSProject
 
         }
 
-        private void colorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      private string GetColorName(Color color)
         {
-
-            if (sender is ComboBox comboBox)
-            {
-                var selectedColor = comboBox.SelectedIndex switch
-                {
-                    0 => Brushes.White,
-                    1 => Brushes.Red,
-                    2 => Brushes.Blue,
-                    3 => Brushes.Green,
-                    4 => Brushes.Orange,
-                    5 => Brushes.Yellow,
-                    _ => Brushes.Transparent
-                };
-
-                if (comboBox == color1ComboBox) color1Label.Background = selectedColor;
-                else if (comboBox == color2ComboBox) color2Label.Background = selectedColor;
-                else if (comboBox == color3ComboBox) color3Label.Background = selectedColor;
-                else if (comboBox == color4ComboBox) color4Label.Background = selectedColor;
-            }
+            if (color == Colors.White) return "White";
+            if (color == Colors.Red) return "Red";
+            if (color == Colors.Blue) return "Blue";
+            if (color == Colors.Green) return "Green";
+            if (color == Colors.Yellow) return "Yellow";
+            if (color == Colors.Orange) return "Orange";
+            return "";
         }
-            
-        
 
         private void checkCodeButton_Click(object sender, RoutedEventArgs e)
         {
-            string chosenColor1, chosenColor2, chosenColor3, chosenColor4;
-            chosenColor1 = color1ComboBox.Text;
-            chosenColor2 = color2ComboBox.Text;
-            chosenColor3 = color3ComboBox.Text;
-            chosenColor4 = color4ComboBox.Text;
 
-            List<string> generatedColors = new List<string> {color1, color2, color3, color4};
-            List<string> chosenColors = new List<string> {chosenColor1, chosenColor2, chosenColor3, chosenColor4};
+            Brush chosenColor1, chosenColor2, chosenColor3, chosenColor4;
+            chosenColor1 = color1Ellipse.Fill;
+            chosenColor2 = color2Ellipse.Fill;
+            chosenColor3 = color3Ellipse.Fill;
+            chosenColor4 = color4Ellipse.Fill;
+
+            List<Brush> generatedColors = new List<Brush> 
+            { new SolidColorBrush((Color)ColorConverter.ConvertFromString(color1)), 
+              new SolidColorBrush((Color)ColorConverter.ConvertFromString(color2)),
+              new SolidColorBrush((Color)ColorConverter.ConvertFromString(color3)),
+              new SolidColorBrush((Color)ColorConverter.ConvertFromString(color4))
+            };
+            List<Brush> chosenColors = new List<Brush> {chosenColor1, chosenColor2, chosenColor3, chosenColor4};
+
+            var attempt = new Attempt
+            {
+                ChosenColor1 = chosenColor1,
+                ChosenColor2 = chosenColor2,
+                ChosenColor3 = chosenColor3,
+                ChosenColor4 = chosenColor4,
+            };
 
             for (int i = 0; i < 4; i++) 
             {
-                Label targetLabel= null;
+                Border targetBorder = null;
 
                 switch (i)
                 {
-                    case 0: targetLabel = color1Label;
+                    case 0: targetBorder = color1Border;
                         break;
-                    case 1: targetLabel = color2Label;
+                    case 1:
+                        targetBorder = color2Border;
                         break;
-                    case 2: targetLabel = color3Label;
+                    case 2:
+                        targetBorder = color3Border;
                         break;
-                    case 3: targetLabel = color4Label;
+                    case 3:
+                        targetBorder = color4Border;
                         break;
                 }
 
-                if (targetLabel != null)
+                if (targetBorder != null)
                 {
-                    if (chosenColors[i] == generatedColors[i])
+                    if (((SolidColorBrush)chosenColors[i]).Color == ((SolidColorBrush)generatedColors[i]).Color)
                     {
-                        targetLabel.BorderBrush = Brushes.DarkRed;
-                        targetLabel.BorderThickness = new Thickness(5);
+                        targetBorder.BorderBrush = Brushes.DarkRed;
+                        targetBorder.BorderThickness = new Thickness(5);
                     }
-                    else if (generatedColors.Contains(chosenColors[i]))
+                    else if (generatedColors.Any(gc => ((SolidColorBrush)gc).Color == ((SolidColorBrush)chosenColors[i]).Color))
                     {
-                        targetLabel.BorderBrush = Brushes.Wheat;
-                        targetLabel.BorderThickness = new Thickness(5);
+                        targetBorder.BorderBrush = Brushes.Wheat;
+                        targetBorder.BorderThickness = new Thickness(5);
                     }
                     else
                     {
-                        targetLabel.BorderBrush = Brushes.Transparent;
-                        targetLabel.BorderThickness = new Thickness(5);
+                        targetBorder.BorderBrush = Brushes.Transparent;
+                        targetBorder.BorderThickness = new Thickness(5);
+                    }
+
+                    // Border informatie opslaan in de attempt
+                    switch (i)
+                    {
+                        case 0:
+                            attempt.Color1BorderBrush = targetBorder.BorderBrush;
+                            attempt.Color1BorderThickness = targetBorder.BorderThickness;
+                            break;
+                        case 1:
+                            attempt.Color2BorderBrush = targetBorder.BorderBrush;
+                            attempt.Color2BorderThickness = targetBorder.BorderThickness;
+                            break;
+                        case 2:
+                            attempt.Color3BorderBrush = targetBorder.BorderBrush;
+                            attempt.Color3BorderThickness = targetBorder.BorderThickness;
+                            break;
+                        case 3:
+                            attempt.Color4BorderBrush = targetBorder.BorderBrush;
+                            attempt.Color4BorderThickness = targetBorder.BorderThickness;
+                            break;
                     }
                 }
             }
+
+            attemptsList.Add(attempt);
+            attemptsListBox.ItemsSource = null;
+            attemptsListBox.ItemsSource = attemptsList;
 
             if (attempts <= 10)
             {

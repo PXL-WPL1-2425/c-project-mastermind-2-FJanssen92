@@ -6,65 +6,55 @@
         xmlns:local="clr-namespace:MastermindCSProject"
         mc:Ignorable="d"
         Title="Mastermind" Height="450" Width="800" KeyDown="ToggleDebug">
+    <Window.Resources>
+        <DataTemplate x:Key="AttemptTemplate">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Border BorderBrush="{Binding Color1BorderBrush}" BorderThickness="{Binding Color1BorderThickness}" CornerRadius="50" Width="30" Height="30" Margin="5">
+                    <Ellipse Fill="{Binding ChosenColor1}" Width="20" Height="20"/>
+                </Border>
+                <Border BorderBrush="{Binding Color2BorderBrush}" BorderThickness="{Binding Color2BorderThickness}" CornerRadius="50" Width="30" Height="30" Margin="5">
+                    <Ellipse Fill="{Binding ChosenColor2}" Width="20" Height="20"/>
+                </Border>
+                <Border BorderBrush="{Binding Color3BorderBrush}" BorderThickness="{Binding Color3BorderThickness}" CornerRadius="50" Width="30" Height="30" Margin="5">
+                    <Ellipse Fill="{Binding ChosenColor3}" Width="20" Height="20"/>
+                </Border>
+                <Border BorderBrush="{Binding Color4BorderBrush}" BorderThickness="{Binding Color4BorderThickness}" CornerRadius="50" Width="30" Height="30" Margin="5">
+                    <Ellipse Fill="{Binding ChosenColor4}" Width="20" Height="20"/>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="23*"/>
-            <ColumnDefinition Width="57*"/>
-            <ColumnDefinition Width="0*"/>
-
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ComboBox x:Name="color1ComboBox" Margin="22,26,0,0" VerticalAlignment="Top" Height="32" SelectionChanged="colorComboBox_SelectionChanged" HorizontalAlignment="Left" Width="156" Grid.ColumnSpan="5">
-            <ComboBoxItem Content="White"/>
-            <ComboBoxItem Content="Red"/>
-            <ComboBoxItem Content="Blue"/>
-            <ComboBoxItem Content="Green"/>
-            <ComboBoxItem Content="Orange"/>
-            <ComboBoxItem Content="Yellow"/>
-        </ComboBox>
-        <ComboBox x:Name="color2ComboBox" Margin="10,26,0,0" VerticalAlignment="Top" Width="158" Height="32" Grid.Column="1" SelectionChanged="colorComboBox_SelectionChanged" HorizontalAlignment="Left">
-            <ComboBoxItem Content="White"/>
-            <ComboBoxItem Content="Red"/>
-            <ComboBoxItem Content="Blue"/>
-            <ComboBoxItem Content="Green"/>
-            <ComboBoxItem Content="Orange"/>
-            <ComboBoxItem Content="Yellow"/>
-        </ComboBox>
-        <ComboBox x:Name="color3ComboBox" HorizontalAlignment="Left" Margin="185,26,0,0" VerticalAlignment="Top" Width="158" Height="32" Grid.Column="1" SelectionChanged="colorComboBox_SelectionChanged">
-            <ComboBoxItem Content="White"/>
-            <ComboBoxItem Content="Red"/>
-            <ComboBoxItem Content="Blue"/>
-            <ComboBoxItem Content="Green"/>
-            <ComboBoxItem Content="Orange"/>
-            <ComboBoxItem Content="Yellow"/>
-        </ComboBox>
-        <ComboBox x:Name="color4ComboBox" HorizontalAlignment="Left" Margin="377,26,0,0" VerticalAlignment="Top" Width="158" Height="32" Grid.Column="1" SelectionChanged="colorComboBox_SelectionChanged">
-            <ComboBoxItem Content="White"/>
-            <ComboBoxItem Content="Red"/>
-            <ComboBoxItem Content="Blue"/>
-            <ComboBoxItem Content="Green"/>
-            <ComboBoxItem Content="Orange"/>
-            <ComboBoxItem Content="Yellow"/>
-        </ComboBox>
-        <Button x:Name="checkCodeButton" Content="Check code" HorizontalAlignment="Left" Margin="201,369,0,0" VerticalAlignment="Top" Width="314" Height="40" Click="checkCodeButton_Click" Grid.ColumnSpan="2"/>
-        <Label x:Name="color1Label" Content="" HorizontalAlignment="Left" Margin="22,73,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Width="156" Height="201"/>
-        <Label x:Name="color2Label" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="14,73,0,0" VerticalAlignment="Top" Height="201" Width="156"/>
-        <Label x:Name="color3Label" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="185,73,0,0" VerticalAlignment="Top" Height="201" Width="156"/>
-        <Label x:Name="color4Label" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="379,73,0,0" VerticalAlignment="Top" Height="201" Width="156"/>
-        <TextBox x:Name="secretCodeTextBox" HorizontalAlignment="Left" Margin="201,321,0,0" VerticalAlignment="Top" Width="314" Grid.ColumnSpan="2" Height="43" IsEnabled="False" SelectionOpacity="-1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" Visibility="Hidden"/>
-        <Label x:Name="timerLabel" Content="Timer:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Width="158" Height="26"/>
-        <Ellipse HorizontalAlignment="Left" Height="95" Margin="80,294,0,0" Stroke="Black" VerticalAlignment="Top" Width="98">
-            <Ellipse.Fill>
-                <RadialGradientBrush>
-                    <GradientStop Color="White" Offset="0" />
-                    <GradientStop Color="LightBlue" Offset="0.1" />
-                    <GradientStop Color="Blue" Offset="1" />
-                </RadialGradientBrush>
-            </Ellipse.Fill>
-            <Ellipse.Effect>
-                <DropShadowEffect Color="Black" Direction="320" ShadowDepth="5" BlurRadius="10" />
-            </Ellipse.Effect>
-        </Ellipse>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border x:Name="color1Border" BorderBrush="Black" BorderThickness="1" CornerRadius="55" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="30" Grid.Column="0" Grid.Row="0">
+            <Ellipse x:Name="color1Ellipse" Height="110" Width="110" Fill="White" MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"/>
+        </Border>
+        <Border x:Name="color2Border" BorderBrush="Black" BorderThickness="1" CornerRadius="55" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="30" Grid.Column="1" Grid.Row="0">
+            <Ellipse x:Name="color2Ellipse" Height="110" Width="110" Fill="White" MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"/>
+        </Border>
+        <Border x:Name="color3Border" BorderBrush="Black" BorderThickness="1" CornerRadius="55" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="30" Grid.Column="2" Grid.Row="0">
+            <Ellipse x:Name="color3Ellipse" Height="110" Width="110" Fill="White" MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"/>
+        </Border>
+        <Border x:Name="color4Border" BorderBrush="Black" BorderThickness="1" CornerRadius="55" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="30" Grid.Column="3" Grid.Row="0">
+            <Ellipse x:Name="color4Ellipse" Height="110" Width="110" Fill="White" MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"/>
+        </Border>
+
+        <ListBox x:Name="attemptsListBox" ItemTemplate="{StaticResource AttemptTemplate}" HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="790" Grid.ColumnSpan="4" Margin="10,159,0,0"/>
+        <Button x:Name="checkCodeButton" Content="Check code" HorizontalAlignment="Center" Margin="0,364,0,0" VerticalAlignment="Top" Width="312" Height="40" Click="checkCodeButton_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+        <TextBox x:Name="secretCodeTextBox" HorizontalAlignment="Center" Margin="0,321,0,0" VerticalAlignment="Top" Width="312" Height="43" IsEnabled="False" SelectionOpacity="-1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" Grid.Column="1" Grid.ColumnSpan="2" Visibility="Hidden"/>
+        <Label x:Name="timerLabel" Content="Timer:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="158" Height="26"/>
 
     </Grid>
 </Window>
