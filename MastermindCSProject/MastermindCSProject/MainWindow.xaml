@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MastermindCSProject"
         mc:Ignorable="d"
-        Title="Mastermind" Height="450" Width="800" KeyDown="ToggleDebug">
+        Title="Mastermind" Height="450" Width="800" KeyDown="ToggleDebug" Closing="Window_Closing">
     <Window.Resources>
         <DataTemplate x:Key="AttemptTemplate">
             <StackPanel Orientation="Horizontal" Margin="5">

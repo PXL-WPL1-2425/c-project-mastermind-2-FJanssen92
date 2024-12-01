@@ -203,6 +203,16 @@ namespace MastermindCSProject
             ellipse.Fill = new SolidColorBrush(colors[colorIndex[index]]);
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+          MessageBoxResult close = MessageBox.Show("Bent u zeker dat u het spel wilt verlaten?", "Afsluiten", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (close == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+
         public void RandomColors(out string color1, out string color2, out string color3, out string color4)
         {
             Random newColor = new Random();
