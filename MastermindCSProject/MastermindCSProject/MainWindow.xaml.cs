@@ -18,6 +18,10 @@ namespace MastermindCSProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Een klasse die de kleuren van de pogingen en de borders van de gekozen kleuren bijhoudt.
+        /// Voor elke kleur wordt de kleur, de kleur van de border en de dikte van de border bijgehouden.
+        /// </summary>
         private class Attempt
         {
             public Brush ChosenColor1 { get; set; }
@@ -97,6 +101,7 @@ namespace MastermindCSProject
         /// <summary>
         /// De timer wordt gestopt en het aantal pogingen wordt verhoogd en in de titel weergegeven.
         /// Daarna wordt de StartCountdown methode weer opgeroepen zodat er een nieuwe beurt begint.
+        /// Er wordt gekeken of de tijd verstreken is en of de speler nog pogingen over heeft.
         /// </summary>
         private void StopTimer()
         {
@@ -142,6 +147,9 @@ namespace MastermindCSProject
             }
         }
 
+        /// <summary>
+        /// De game wordt gereset en de geheime code wordt opnieuw gegenereerd.
+        /// </summary>
         private void ResetGame()
         {
             attempts = 1;
@@ -265,23 +273,35 @@ namespace MastermindCSProject
 
         }
 
+        /// <summary>
+        /// De gekozen en gegenereerde kleuren worden vergeleken met elkaar. 
+        /// Er wordt een Attempt object aangemaakt en de gekozen kleuren worden toegevoegd.
+        /// Daarna krijgen de ellipses een border afhankelijk van de situatie.
+        /// Deze borders worden ook toegevoegd aan het attempt object.
+        /// Het volledige attempt object wordt toegevoegd aan de attemptsList en de listbox wordt geupdate.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void checkCodeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //Gekozen kleuren opslaan in variabelen en in een lijst zetten.
             Brush chosenColor1, chosenColor2, chosenColor3, chosenColor4;
             chosenColor1 = color1Ellipse.Fill;
             chosenColor2 = color2Ellipse.Fill;
             chosenColor3 = color3Ellipse.Fill;
             chosenColor4 = color4Ellipse.Fill;
 
+            List<Brush> chosenColors = new List<Brush> { chosenColor1, chosenColor2, chosenColor3, chosenColor4 };
+
+            //Omdat de gegenereerde kleuren een string zijn, moeten deze omgezet worden naar een Brush.
             List<Brush> generatedColors = new List<Brush> 
             { new SolidColorBrush((Color)ColorConverter.ConvertFromString(color1)), 
               new SolidColorBrush((Color)ColorConverter.ConvertFromString(color2)),
               new SolidColorBrush((Color)ColorConverter.ConvertFromString(color3)),
               new SolidColorBrush((Color)ColorConverter.ConvertFromString(color4))
             };
-            List<Brush> chosenColors = new List<Brush> {chosenColor1, chosenColor2, chosenColor3, chosenColor4};
 
+            //Een nieuwe poging aanmaken en de gekozen kleuren toevoegen.
             var attempt = new Attempt
             {
                 ChosenColor1 = chosenColor1,
@@ -292,6 +312,7 @@ namespace MastermindCSProject
 
             bool allCorrect = true;
 
+            //Border wordt gelijkgesteld aan de juiste border, afhankelijk van de index.
             for (int i = 0; i < 4; i++) 
             {
                 Border targetBorder = null;
@@ -311,6 +332,9 @@ namespace MastermindCSProject
                         break;
                 }
 
+                //Als de targetBorder niet null is, wordt er gekeken of de kleur van de gekozen kleur gelijk is aan de gegenereerde kleur.
+                //Een gekleurde border wordt toegevoegd afhankelijk van de situatie.
+                //De score wordt ook al gelijk aangepast in dezelfde vergelijking.
                 if (targetBorder != null)
                 {
                     if (((SolidColorBrush)chosenColors[i]).Color == ((SolidColorBrush)generatedColors[i]).Color)
@@ -333,7 +357,7 @@ namespace MastermindCSProject
                         allCorrect = false;
                     }
 
-                    // Border informatie opslaan in de attempt
+                    //De juiste border wordt dan ook meegegeven aan de attempt.
                     switch (i)
                     {
                         case 0:
@@ -352,14 +376,18 @@ namespace MastermindCSProject
                             attempt.Color4BorderBrush = targetBorder.BorderBrush;
                             attempt.Color4BorderThickness = targetBorder.BorderThickness;
                             break;
+                    
                     }
                 }
             }
 
+            //De attempt wordt toegevoegd aan een lijst, die op zijn beurt weer wordt toegevoegd aan de listbox.
             attemptsList.Add(attempt);
             attemptsListBox.ItemsSource = null;
             attemptsListBox.ItemsSource = attemptsList;
 
+            //Als alle kleuren correct zijn geraden, wordt de speler gefeliciteerd en stopt de timer.
+            //Dit gebeurt door de Boolean allCorrect. Als alle kleuren correct zijn, blijft deze true en wordt het spel beeindigt.
             if (allCorrect)
             {
                 isGameOver = true;
