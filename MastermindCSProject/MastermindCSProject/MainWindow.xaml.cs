@@ -34,13 +34,13 @@ namespace MastermindCSProject
             public Thickness Color4BorderThickness { get; set; }
         }
 
-            private List<Attempt> attemptsList;
+        private List<Attempt> attemptsList;
         private string color1, color2, color3, color4;
         private int attempts = 1;
         private DispatcherTimer timer;
         private int startTime;
         private bool isGameOver = false;
-
+        private int score = 100;
         private Color[] colors = { Colors.White, Colors.Red, Colors.Blue, Colors.Green, Colors.Yellow, Colors.Orange };
         private int[] colorIndex = { 0, 0, 0, 0 };
 
@@ -293,11 +293,13 @@ namespace MastermindCSProject
                     {
                         targetBorder.BorderBrush = Brushes.Wheat;
                         targetBorder.BorderThickness = new Thickness(5);
+                        score -= 1;
                     }
                     else
                     {
                         targetBorder.BorderBrush = Brushes.Transparent;
                         targetBorder.BorderThickness = new Thickness(5);
+                        score -= 2;
                     }
 
                     // Border informatie opslaan in de attempt
@@ -337,7 +339,9 @@ namespace MastermindCSProject
             {
                 StopTimer();
             }
-           
+
+            scoreLabel.Content = "Score: " + score;
+
         }
     }
 }

@@ -55,6 +55,7 @@
 
         <TextBox x:Name="secretCodeTextBox" HorizontalAlignment="Center" Margin="0,321,0,0" VerticalAlignment="Top" Width="312" Height="43" IsEnabled="False" SelectionOpacity="-1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" Grid.Column="1" Grid.ColumnSpan="2" Visibility="Hidden"/>
         <Label x:Name="timerLabel" Content="Timer:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="158" Height="26"/>
+        <Label x:Name="scoreLabel" Content="Score: 100" HorizontalAlignment="Left" Margin="44,384,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
