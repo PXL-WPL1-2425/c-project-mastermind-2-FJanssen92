@@ -120,6 +120,8 @@ namespace MastermindCSProject
                 attempts++;
                 Title = $"Mastermind - Poging: {attempts}";
                 timerLabel.Content = "Tijd is op! Beurt verloren!";
+                score -= 8;
+                scoreLabel.Content = "Score: " + score;
                 StartCountdown();
             }
 
@@ -189,6 +191,15 @@ namespace MastermindCSProject
             }
         }
 
+
+        /// <summary>
+        /// Er wordt gekeken op welke ellipse geklikt wordt door de index te bepalen.
+        /// Daarna wordt de kleur van de ellipse veranderd naar de volgende kleur in de array.
+        /// Er wordt modulus gebruikt om ervoor te zorgen dat de index niet buiten de array valt.
+        /// Daarna wordt de kleur van de geselecteerde ellipse veranderd naar de volgende kleur in de colors array.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Ellipse ellipse = sender as Ellipse;
@@ -252,17 +263,6 @@ namespace MastermindCSProject
             color3 = colorList[2];
             color4 = colorList[3];
 
-        }
-
-      private string GetColorName(Color color)
-        {
-            if (color == Colors.White) return "White";
-            if (color == Colors.Red) return "Red";
-            if (color == Colors.Blue) return "Blue";
-            if (color == Colors.Green) return "Green";
-            if (color == Colors.Yellow) return "Yellow";
-            if (color == Colors.Orange) return "Orange";
-            return "";
         }
 
         private void checkCodeButton_Click(object sender, RoutedEventArgs e)

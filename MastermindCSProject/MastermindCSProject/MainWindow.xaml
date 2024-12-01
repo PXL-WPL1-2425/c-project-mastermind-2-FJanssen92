@@ -54,10 +54,10 @@
             </Border>
         </StackPanel>
 
-        <ListBox x:Name="attemptsListBox" ItemTemplate="{StaticResource AttemptTemplate}" HorizontalAlignment="Left" Height="414" VerticalAlignment="Center" Width="215" Margin="56,0,0,0" Background="{x:Null}" Grid.Column="1"/>
+        <ListBox x:Name="attemptsListBox" ItemTemplate="{StaticResource AttemptTemplate}" HorizontalAlignment="Left" Height="414" VerticalAlignment="Center" Width="215" Margin="56,0,0,0" Background="{x:Null}" Grid.Column="1" BorderBrush="White"/>
         <Button x:Name="checkCodeButton" Content="Check code" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="408" Height="40" Click="checkCodeButton_Click" FontFamily="Impact" Foreground="White" FontSize="20" Background="Black"/>
-        <TextBox x:Name="secretCodeTextBox" HorizontalAlignment="Left" Margin="244,321,0,0" VerticalAlignment="Top" Width="312" Height="43" IsEnabled="False" SelectionOpacity="-1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" Grid.ColumnSpan="2" Visibility="Hidden"/>
-        <Label x:Name="timerLabel" Content="Timer:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Height="30" Foreground="White" FontFamily="Impact" FontSize="18" Margin="10,0,0,0"/>
+        <TextBox x:Name="secretCodeTextBox" HorizontalAlignment="Left" Margin="10,249,0,0" VerticalAlignment="Top" Width="408" Height="60" IsEnabled="False" SelectionOpacity="-1" FontSize="14" TextWrapping="Wrap" FontFamily="Impact" Visibility="Hidden"/>
+        <Label x:Name="timerLabel" Content="Timer:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="30" Foreground="White" FontFamily="Impact" FontSize="18" Margin="10,0,0,0"/>
         <Label x:Name="scoreLabel" Content="Score: 100" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Foreground="White" FontFamily="Impact" FontSize="18"/>
     </Grid>
 </Window>
