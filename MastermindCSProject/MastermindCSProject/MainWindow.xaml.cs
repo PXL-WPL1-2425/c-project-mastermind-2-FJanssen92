@@ -101,19 +101,33 @@ namespace MastermindCSProject
         private void StopTimer()
         {
             timer.Stop();
-            if (attempts <= 10 && !isGameOver)
+            if (isGameOver)
+            {
+                MessageBoxResult result = MessageBox.Show("Wil je nog een keer spelen?", "Einde Spel!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.No)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    ResetGame();
+                }
+                return;
+            }
+
+            if (attempts < 10)
             {
                 attempts++;
                 Title = $"Mastermind - Poging: {attempts}";
                 timerLabel.Content = "Tijd is op! Beurt verloren!";
                 StartCountdown();
             }
-            
+
             else
             {
                 isGameOver = true;
-                MessageBox.Show("Game Over! De correct code was: " + color1 + " " + color2 + " " + color3 + " " + color4);
-                MessageBoxResult result =  MessageBox.Show("Wil je nog een keer spelen?", "Einde Spel!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBox.Show("Game Over! De correcte code was: " + color1 + " " + color2 + " " + color3 + " " + color4, "Game Over!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBoxResult result = MessageBox.Show("Wil je nog een keer spelen?", "Einde Spel!", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.No)
                 {
@@ -129,6 +143,7 @@ namespace MastermindCSProject
         private void ResetGame()
         {
             attempts = 1;
+            score = 100;
             RandomColors(out color1, out color2, out color3, out color4);
             secretCodeTextBox.Text = $"Kleur 1: {color1}, Kleur 2: {color2}, Kleur 3:{color3}, Kleur 4:{color4}";
             Title = $"Mastermind - Poging: {attempts}";
@@ -148,6 +163,8 @@ namespace MastermindCSProject
             color4Border.BorderBrush = Brushes.Black;
             color4Border.BorderThickness = new Thickness(1);
 
+            attemptsList.Clear();
+            attemptsListBox.ItemsSource = null;
             StartCountdown();
         }
 
@@ -263,6 +280,8 @@ namespace MastermindCSProject
                 ChosenColor4 = chosenColor4,
             };
 
+            bool allCorrect = true;
+
             for (int i = 0; i < 4; i++) 
             {
                 Border targetBorder = null;
@@ -294,12 +313,14 @@ namespace MastermindCSProject
                         targetBorder.BorderBrush = Brushes.Wheat;
                         targetBorder.BorderThickness = new Thickness(5);
                         score -= 1;
+                        allCorrect = false;
                     }
                     else
                     {
                         targetBorder.BorderBrush = Brushes.Transparent;
                         targetBorder.BorderThickness = new Thickness(5);
                         score -= 2;
+                        allCorrect = false;
                     }
 
                     // Border informatie opslaan in de attempt
@@ -329,7 +350,13 @@ namespace MastermindCSProject
             attemptsListBox.ItemsSource = null;
             attemptsListBox.ItemsSource = attemptsList;
 
-            if (attempts <= 10)
+            if (allCorrect)
+            {
+                isGameOver = true;
+                MessageBox.Show("Gefeliciteerd! Je hebt de code geraden! Score: " + score + " Pogingen: " + attempts, "Gewonnen!");
+                StopTimer();
+            }
+            else if (attempts < 10)
             {
                 attempts++;
                 this.Title = $"Mastermind - Poging: {attempts}";
